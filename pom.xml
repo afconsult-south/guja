@@ -4,7 +4,7 @@
 
     <groupId>com.wadpam.guja</groupId>
     <artifactId>guja</artifactId>
-    <version>AF-1.0-SNAPSHOT_GUJA-0.8.13-SNAPSHOT</version>
+    <version>AF-1.0_0.8.13</version>
 
     <packaging>pom</packaging>
 

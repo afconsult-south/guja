@@ -96,7 +96,8 @@ public class GujaCoreModule extends AbstractModule {
     bind(RequestScopedVelocityTemplateStringWriterBuilder.class);
     bind(VelocityTemplateStringWriterBuilder.class);
 
-    bind(EmailService.class).to(JavaMailService.class);
+    // Binding email service has been moved to the backend to allow each project setting their own implementation
+    // bind(EmailService.class).to(JavaMailService.class);
 
     bind(UserResource.class);
     bind(UserService.class).to(UserServiceImpl.class);

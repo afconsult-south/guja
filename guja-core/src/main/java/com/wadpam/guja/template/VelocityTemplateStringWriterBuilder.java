@@ -1,10 +1,13 @@
 package com.wadpam.guja.template;
 
 import com.google.inject.Inject;
+import com.wadpam.guja.admintask.AdminTaskResource;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.exception.ResourceNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.StringWriter;
 import java.util.Locale;
@@ -19,6 +22,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author mattiaslevin
  */
 public class VelocityTemplateStringWriterBuilder {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(VelocityTemplateStringWriterBuilder.class);
 
   {
     // Initialize Velocity engine in singleton mode
@@ -96,11 +101,13 @@ public class VelocityTemplateStringWriterBuilder {
 
   private Template getTemplate(String templateName) {
 
+    final String localizedTemplateName = localizedTemplateName(templateName, locale);
     try {
-      return Velocity.getTemplate(localizedTemplateName(templateName, locale));
+      return Velocity.getTemplate(localizedTemplateName);
     } catch (ResourceNotFoundException e) {
       // Fall back to default template name without any local postfix
       // If this also fails let the exception propagate
+      LOGGER.warn("Failed to load localized template [{}], fallback to default template [{}]", localizedTemplateName, templateName);
       return Velocity.getTemplate(templateName);
     }
 

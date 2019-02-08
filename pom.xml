@@ -24,8 +24,8 @@
 
     <properties>
         <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
-        <gae.version>1.9.10</gae.version>
-        <appengine.target.version>1.9.10</appengine.target.version>
+        <gae.version>1.9.71</gae.version>
+        <appengine.target.version>1.9.71</appengine.target.version>
         <mardao.version>3.0.13</mardao.version>
     </properties>
         
@@ -84,8 +84,8 @@
               <artifactId>maven-compiler-plugin</artifactId>
               <version>3.1</version>
               <configuration>
-                <source>1.7</source>
-                <target>1.7</target>
+                <source>1.8</source>
+                <target>1.8</target>
               </configuration>
             </plugin>
             <plugin>

@@ -1,30 +1,40 @@
 package com.wadpam.guja.servlet;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.appengine.api.blobstore.*;
-import com.google.appengine.api.images.ImagesService;
-import com.google.appengine.api.images.ImagesServiceFactory;
-import com.google.appengine.api.images.ServingUrlOptions;
-import com.google.appengine.repackaged.com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
-import com.google.common.io.BaseEncoding;
-import com.wadpam.guja.exceptions.BadRequestRestException;
-import com.wadpam.guja.exceptions.NotFoundRestException;
-import com.wadpam.guja.web.JsonCharacterEncodingResponseFilter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.core.UriBuilder;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.URLEncoder;
-import java.util.*;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.appengine.api.blobstore.BlobInfo;
+import com.google.appengine.api.blobstore.BlobInfoFactory;
+import com.google.appengine.api.blobstore.BlobKey;
+import com.google.appengine.api.blobstore.BlobstoreService;
+import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
+import com.google.appengine.api.images.ImagesService;
+import com.google.appengine.api.images.ImagesServiceFactory;
+import com.google.appengine.api.images.ServingUrlOptions;
+import com.google.common.collect.Lists;
+import com.google.common.io.BaseEncoding;
+import com.wadpam.guja.exceptions.BadRequestRestException;
+import com.wadpam.guja.exceptions.NotFoundRestException;
+import com.wadpam.guja.web.JsonCharacterEncodingResponseFilter;
 
 /**
  * Blobs must be served from inside a servlet.
@@ -116,7 +126,7 @@ public class GAEBlobServlet extends HttpServlet {
       callback = String.format("%s?%s", callback, null != queryString ? queryString : "");
     }
 
-    Map<String, String> response = ImmutableMap.of("uploadUrl", blobstoreService.createUploadUrl(callback));
+    Map<String, String> response = Collections.singletonMap("uploadUrl", blobstoreService.createUploadUrl(callback));
 
     PrintWriter out = resp.getWriter();
     resp.setContentType(JsonCharacterEncodingResponseFilter.APPLICATION_JSON_UTF8);

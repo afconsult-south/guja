@@ -1,5 +1,13 @@
 package com.wadpam.guja.oauth2.domain;
 
+import java.util.Collection;
+import java.util.Locale;
+
+import javax.persistence.Basic;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+
 /*
  * #%L
  * guja-core
@@ -24,14 +32,8 @@ package com.wadpam.guja.oauth2.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import net.sf.mardao.core.Cached;
 
-import javax.persistence.Basic;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-import java.util.Collection;
+import net.sf.mardao.core.Cached;
 
 /**
  * User domain object.
@@ -44,7 +46,9 @@ import java.util.Collection;
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"username"}))
 public class DUser extends DOAuth2User {
 
-  /**
+  private static final Locale DEFAULT_LOCALE = Locale.forLanguageTag("en");
+
+/**
    * A unique user name
    */
   @Basic
@@ -267,5 +271,13 @@ public class DUser extends DOAuth2User {
 
   public void setPreferredLanguage(String preferredLanguage) {
     this.preferredLanguage = preferredLanguage;
+  }
+  
+  @JsonIgnore
+  public Locale getLocale() {
+	  if(preferredLanguage == null) {
+		  return DEFAULT_LOCALE;
+	  }
+	  return Locale.forLanguageTag(preferredLanguage);
   }
 }

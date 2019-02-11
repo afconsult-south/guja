@@ -29,21 +29,32 @@ import com.google.inject.persist.Transactional;
 import com.wadpam.guja.admintask.AdminTask;
 import com.wadpam.guja.admintask.AdminTaskResource;
 import com.wadpam.guja.exceptions.RestExceptionMapper;
-import com.wadpam.guja.i18n.*;
-import com.wadpam.guja.oauth2.api.*;
+import com.wadpam.guja.i18n.DaoLocalizationBuilder;
+import com.wadpam.guja.i18n.PropertyFileLocalizationBuilder;
+import com.wadpam.guja.oauth2.api.FactoryResource;
+import com.wadpam.guja.oauth2.api.OAuth2AuthorizationResource;
+import com.wadpam.guja.oauth2.api.OAuth2FederatedResource;
+import com.wadpam.guja.oauth2.api.OAuth2UserResource;
+import com.wadpam.guja.oauth2.api.UserResource;
 import com.wadpam.guja.oauth2.dao.DConnectionDaoBean;
 import com.wadpam.guja.oauth2.dao.DFactoryDaoBean;
 import com.wadpam.guja.oauth2.dao.DOAuth2UserDaoBean;
 import com.wadpam.guja.oauth2.dao.DUserDaoBean;
-import com.wadpam.guja.oauth2.provider.*;
+import com.wadpam.guja.oauth2.provider.DefaultPasswordEncoder;
+import com.wadpam.guja.oauth2.provider.DefaultTokenGenerator;
+import com.wadpam.guja.oauth2.provider.Oauth2UserProvider;
+import com.wadpam.guja.oauth2.provider.PasswordEncoder;
+import com.wadpam.guja.oauth2.provider.RequestScopedLocale;
+import com.wadpam.guja.oauth2.provider.TemporaryTokenCache;
+import com.wadpam.guja.oauth2.provider.TokenGenerator;
+import com.wadpam.guja.oauth2.provider.UserAuthenticationProvider;
 import com.wadpam.guja.oauth2.service.UserAdminTask;
 import com.wadpam.guja.oauth2.service.UserService;
 import com.wadpam.guja.oauth2.service.UserServiceImpl;
 import com.wadpam.guja.oauth2.web.Oauth2ClientAuthenticationFilter;
-import com.wadpam.guja.service.EmailService;
-import com.wadpam.guja.service.JavaMailService;
 import com.wadpam.guja.template.RequestScopedVelocityTemplateStringWriterBuilder;
 import com.wadpam.guja.template.VelocityTemplateStringWriterBuilder;
+
 import net.sf.mardao.dao.Supplier;
 
 /**

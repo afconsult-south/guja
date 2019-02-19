@@ -89,7 +89,7 @@ public class VelocityTemplateStringWriterBuilder {
     checkNotNull(vc);
 
     // Load template based on locale
-    // Will trow exception if template is not found
+    // Will throw an exception if the template is not found
     Template template = getTemplate(templateName);
 
     // Merge template and context
@@ -103,11 +103,14 @@ public class VelocityTemplateStringWriterBuilder {
 
     final String localizedTemplateName = localizedTemplateName(templateName, locale);
     try {
+      // Even if we catch the not-found error here and fix it below, this method will send an Error to the logger, which clutters
+      // up the GAE log. This should be fixed somehow.
       return Velocity.getTemplate(localizedTemplateName);
     } catch (ResourceNotFoundException e) {
       // Fall back to default template name without any local postfix
       // If this also fails let the exception propagate
-      LOGGER.warn("Failed to load localized template [{}], fallback to default template [{}]", localizedTemplateName, templateName);
+      // This will be logged for every user not in one of the translated locales, so don't do a Warning here, Info is enough
+      LOGGER.info("Failed to load localized template [{}], fallback to default template [{}]", localizedTemplateName, templateName);
       return Velocity.getTemplate(templateName);
     }
 
